@@ -218,7 +218,7 @@ class _ProjectBrowserState extends State<ProjectBrowser> {
                     builder: (context) {
                       return ChangeNotifierProvider.value(
                           value: widget.core.settings,
-                          child: const SettingsRoute());
+                          child: SettingsRoute(core: widget.core));
                     },
                   ));
                 },

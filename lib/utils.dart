@@ -76,3 +76,9 @@ class FNV1aHasher {
     return _hash;
   }
 }
+
+String formatDateTimeForFilename() {
+  final now = DateTime.now();
+  final formatter = DateFormat('yyyyMMdd_HHmmss');
+  return formatter.format(now);
+}

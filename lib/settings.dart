@@ -1,6 +1,11 @@
+import 'package:colora/core.dart';
+import 'package:colora/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart' as p;
 
 class ColoraSettings extends ChangeNotifier {
   static const String _keySeedColor = 'seedColor';
@@ -31,7 +36,8 @@ class ColoraSettings extends ChangeNotifier {
 }
 
 class SettingsRoute extends StatefulWidget {
-  const SettingsRoute({super.key});
+  final ColoraCore core;
+  const SettingsRoute({super.key, required this.core});
 
   @override
   SettingsRouteState createState() => SettingsRouteState();
@@ -80,8 +86,23 @@ class SettingsRouteState extends State<SettingsRoute> {
                           ))
                       .toList(),
                 ),
+                const SizedBox(height: 8.0),
               ],
             ),
+            const SizedBox(height: 8.0),
+            TextButton.icon(
+              icon: const Icon(Icons.backup),
+              label: const Text('share backup'),
+              onPressed: () async {
+                final docsDir = await getApplicationDocumentsDirectory();
+                final backupName =
+                    "colora-backup-${formatDateTimeForFilename()}.zip";
+                Share.shareXFiles([
+                  XFile(await widget.core.backup
+                      .createBackup(p.join(docsDir.path, backupName))),
+                ]);
+              },
+            )
           ],
         ),
       ),

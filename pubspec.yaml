@@ -51,6 +51,7 @@ dependencies:
   fuzzywuzzy: ^1.2.0
   share_plus: ^10.1.1
   shared_preferences: ^2.3.2
+  flutter_archive: ^6.0.3
 
 dev_dependencies:
   flutter_test:

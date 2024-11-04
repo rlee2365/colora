@@ -1,3 +1,4 @@
+import 'package:colora/backup.dart';
 import 'package:colora/models.dart';
 import 'package:colora/objectbox.g.dart';
 import 'package:colora/settings.dart';
@@ -7,14 +8,17 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
 class ColoraCore extends ChangeNotifier {
-  static const dbPath = 'colora.db';
+  static const dbDir = 'Colora';
   late final Store store;
   late final Box<Project> projectBox;
   late final Box<Section> sectionBox;
   List<Project> projects = [];
   final waveformCache = WaveformCache();
   late final ColoraSettings settings;
-  ColoraCore();
+  late final ColoraBackup backup;
+  ColoraCore() {
+    backup = ColoraBackup(this);
+  }
 
   Future<void> setup() async {
     settings = await ColoraSettings.load();
@@ -24,14 +28,14 @@ class ColoraCore extends ChangeNotifier {
 
   Future<void> setupObjectBox() async {
     final docsDir = await getApplicationDocumentsDirectory();
-    final store = await openStore(directory: p.join(docsDir.path, null));
+    final store = await openStore(directory: p.join(docsDir.path, dbDir));
     this.store = store;
     projectBox = store.box<Project>();
     sectionBox = store.box<Section>();
-    if (kDebugMode) {
-      projectBox.removeAll();
-      sectionBox.removeAll();
-    }
+    // if (kDebugMode) {
+    // projectBox.removeAll();
+    // sectionBox.removeAll();
+    // }
     await waveformCache.setup(store);
     loadFromObjectBox();
   }
