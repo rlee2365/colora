@@ -85,7 +85,7 @@ class _ProjectEditorState extends State<ProjectEditor> {
                         const SizedBox(width: 16.0),
                         Expanded(
                           child: ActionChip(
-                              avatar: Icon(Icons.file_open),
+                              avatar: const Icon(Icons.file_open),
                               label: Consumer<Project>(
                                   builder: (context, project, _) {
                                 return Text(
