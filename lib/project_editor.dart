@@ -44,12 +44,12 @@ class _ProjectEditorState extends State<ProjectEditor> {
       value: widget.project,
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 50,
+          toolbarHeight: 40,
           title: TextField(
             decoration: null,
             controller: titleController,
             style: theme.textTheme.headlineSmall?.copyWith(
-              fontSize: 24,
+              fontSize: 16,
             ),
             onChanged: (text) {
               widget.project.setName(text);
