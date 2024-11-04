@@ -53,7 +53,7 @@ class _SectionLyricsState extends State<SectionLyrics> {
                 });
               },
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 100),
+                duration: const Duration(milliseconds: 200),
                 height: showHeader ? 40 : 0,
                 child: Row(
                   children: [

@@ -443,7 +443,7 @@ class _AudioTransportState extends State<AudioTransport> {
                     ),
                     const SizedBox(width: 4.0),
                     addSectionLoopButton(context),
-                    const SizedBox(width: 4.0),
+                    const SizedBox(width: 8.0),
                     MultiProvider(
                         providers: [
                           ChangeNotifierProvider.value(

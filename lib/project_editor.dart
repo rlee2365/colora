@@ -58,7 +58,7 @@ class _ProjectEditorState extends State<ProjectEditor> {
           // actions : Change file
         ),
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -108,12 +108,19 @@ class _ProjectEditorState extends State<ProjectEditor> {
                   );
                 }),
               ),
-              const SizedBox(height: 8),
               // Text editor
               Expanded(
                 child: Card(
+                  color: theme.colorScheme.onSecondaryFixed,
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(
+                        color: theme.colorScheme.onSecondary,
+                        width: 2.0,
+                      )),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                     child: ChangeNotifierProvider.value(
                       value: widget.project,
                       child: ChangeNotifierProvider.value(
