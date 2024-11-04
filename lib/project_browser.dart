@@ -193,7 +193,7 @@ class _ProjectBrowserState extends State<ProjectBrowser> {
         child: Row(
           children: [
             const Spacer(),
-            const SizedBox(width: 16.0),
+            const SizedBox(width: 12.0),
             PopupMenuButton<String>(
                 onSelected: (value) {
                   setState(() {
@@ -208,13 +208,9 @@ class _ProjectBrowserState extends State<ProjectBrowser> {
                           ))
                       .toList();
                 },
-                child: Chip(
-                  avatar: const Icon(
-                    Icons.sort,
-                  ),
-                  label: Text(sortMethod),
-                )),
-            const SizedBox(width: 12.0),
+                child: const Chip(
+                    padding: EdgeInsets.all(4.0), label: Icon(Icons.sort))),
+            const SizedBox(width: 16.0),
             IconButton.outlined(
                 onPressed: () {},
                 icon: const Icon(
