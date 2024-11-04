@@ -48,6 +48,7 @@ dependencies:
   transparent_pointer: ^1.0.1
   collection: ^1.18.0
   keyboard_visibility_pro: ^0.0.1
+  fuzzywuzzy: ^1.2.0
 
 dev_dependencies:
   flutter_test:
