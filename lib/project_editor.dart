@@ -76,7 +76,7 @@ class _ProjectEditorState extends State<ProjectEditor> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ActionChip(
-                          label: const Text("Export"),
+                          label: const Text("export"),
                           onPressed: () {
                             showLyricsDialog(context, widget.project);
                           },
@@ -89,7 +89,7 @@ class _ProjectEditorState extends State<ProjectEditor> {
                               label: Consumer<Project>(
                                   builder: (context, project, _) {
                                 return Text(
-                                    "File: ${p.basename(project.appLocalFilePath)}",
+                                    "file: ${p.basename(project.appLocalFilePath)}",
                                     overflow: TextOverflow.ellipsis,
                                     softWrap: false);
                               }),
@@ -155,8 +155,7 @@ class _ProjectEditorState extends State<ProjectEditor> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                      "No section. Create a section to edit lyrics."),
+                                  Text("create a section to edit lyrics"),
                                 ],
                               ),
                             );

@@ -57,7 +57,7 @@ class _SectionLyricsState extends State<SectionLyrics> {
                 child: Row(
                   children: [
                     Text(
-                      "Lyrics",
+                      "lyrics",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: widget.section.color),

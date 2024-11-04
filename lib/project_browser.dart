@@ -99,12 +99,12 @@ class ProjectCard extends StatelessWidget {
                     Row(
                       children: [
                         // Date of updating
-                        Text("Upd. ${formatDateTime1(project.dateUpdated!)}",
+                        Text("upd. ${formatDateTime1(project.dateUpdated!)}",
                             style: Theme.of(context).textTheme.bodySmall),
                         const Spacer(),
                         // Duration
                         Text(
-                            "Dur: ${formatDuration1(Duration(milliseconds: project.durMilliseconds))}",
+                            "dur: ${formatDuration1(Duration(milliseconds: project.durMilliseconds))}",
                             style: Theme.of(context).textTheme.bodySmall)
                       ],
                     ),
@@ -112,7 +112,7 @@ class ProjectCard extends StatelessWidget {
                     const SizedBox(height: 4.0),
                     Consumer<Project>(builder: (context, project, _) {
                       return Text(
-                          "Instrumental: ${p.basename(project.appLocalFilePath)}",
+                          "instrumental: ${p.basename(project.appLocalFilePath)}",
                           style: Theme.of(context).textTheme.bodySmall);
                     }),
                     const Row()
@@ -143,8 +143,8 @@ class ProjectBrowser extends StatefulWidget {
 
 class _ProjectBrowserState extends State<ProjectBrowser> {
   static const List<({String title, String name})> sortMethods = [
-    (name: "updAsc", title: "Updated (ascending)"),
-    (name: "updDesc", title: "Updated (descending)"),
+    (name: "updAsc", title: "updated (ascending)"),
+    (name: "updDesc", title: "updated (descending)"),
   ];
   String sortMethod = "updDesc";
   final DeletionController _deletionController = DeletionController();

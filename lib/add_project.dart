@@ -42,12 +42,15 @@ class _AddProjectDialogState extends State<AddProjectDialog> {
     final bool canAddProject =
         _selectedFilePath.isNotEmpty && _nameController.text.isNotEmpty;
     return AlertDialog(
-        title: const Text('Add Project'),
+        title: const Text('add project'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              decoration: const InputDecoration(labelText: 'Project Name'),
+              decoration: const InputDecoration(
+                  labelText: 'project name',
+                  border: OutlineInputBorder(),
+                  isDense: true),
               controller: _nameController,
             ),
             const SizedBox(
@@ -76,18 +79,18 @@ class _AddProjectDialogState extends State<AddProjectDialog> {
                     });
                   }
                 },
-                label: const Text("Select Instrumental")),
+                label: const Text("select instrumental")),
             const SizedBox(
               height: 16.0,
             ),
             if (_selectedFilePath.isNotEmpty)
-              Text("Selected file: $_selectedFileName"),
+              Text("selected file: $_selectedFileName"),
             _selectedFilePath.isNotEmpty
                 ? AudioFileWaveforms(
                     size: Size(MediaQuery.of(context).size.width, 100.0),
                     playerController: playerController,
                   )
-                : const Text("No file loaded"),
+                : const Text("no file loaded"),
             const SizedBox(
               height: 16.0,
             ),

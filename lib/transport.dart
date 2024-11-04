@@ -209,7 +209,7 @@ class _AudioTransportState extends State<AudioTransport> {
       },
       visualDensity: VisualDensity.compact,
       avatar: Icon(Icons.repeat, color: color),
-      label: Text("Section", style: TextStyle(color: color)),
+      label: Text("section", style: TextStyle(color: color)),
     );
   }
 

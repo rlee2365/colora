@@ -13,7 +13,7 @@ void showLyricsDialog(BuildContext context, Project project) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('Export Lyrics'),
+        title: const Text('export lyrics'),
         content: StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return SizedBox(
@@ -22,7 +22,7 @@ void showLyricsDialog(BuildContext context, Project project) {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CheckboxListTile(
-                    title: const Text("Include Timestamps"),
+                    title: const Text("include timestamps"),
                     value: includeTimestamps,
                     onChanged: (bool? value) {
                       setState(() {
@@ -37,10 +37,10 @@ void showLyricsDialog(BuildContext context, Project project) {
                       Clipboard.setData(ClipboardData(text: lyrics));
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Lyrics copied to clipboard')),
+                            content: Text('lyrics copied to clipboard')),
                       );
                     },
-                    child: const Text('Copy to Clipboard'),
+                    child: const Text('copy to clipboard'),
                   ),
                   // Becauase it's unlikely for us to get MANAGE_EXTERNAL_STORAGE permission
                   // We cannot save to external storage
@@ -55,7 +55,7 @@ void showLyricsDialog(BuildContext context, Project project) {
                           timestamps: includeTimestamps));
                       await Share.shareXFiles([XFile(targetPath)]);
                     },
-                    child: const Text('Share as Text File'),
+                    child: const Text('share as text file'),
                   ),
                 ],
               ),
