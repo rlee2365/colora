@@ -1,0 +1,119 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:7821197814989437761",
+      "lastPropertyId": "5:1639930166387832011",
+      "name": "Project",
+      "properties": [
+        {
+          "id": "1:6091987459547460303",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:488487103284766475",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:3202769354375025584",
+          "name": "appLocalFilePath",
+          "type": 9
+        },
+        {
+          "id": "4:1304027855441958525",
+          "name": "durMilliseconds",
+          "type": 6
+        },
+        {
+          "id": "5:1639930166387832011",
+          "name": "dateUpdated",
+          "type": 10
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:306749482424188798",
+      "lastPropertyId": "4:2567995347118315330",
+      "name": "Section",
+      "properties": [
+        {
+          "id": "1:8020218432502665100",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3762845994026739824",
+          "name": "lyrics",
+          "type": 9
+        },
+        {
+          "id": "3:4958894905930946320",
+          "name": "startMilliseconds",
+          "type": 6
+        },
+        {
+          "id": "4:2567995347118315330",
+          "name": "projectId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:2430481325783023594",
+          "relationTarget": "Project"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:125831000704829797",
+      "lastPropertyId": "5:4515149916455874654",
+      "name": "CachedWaveform",
+      "properties": [
+        {
+          "id": "1:4182853129964620528",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "3:626596495757465504",
+          "name": "noOfSamples",
+          "type": 6
+        },
+        {
+          "id": "4:2076260701664321004",
+          "name": "waveform",
+          "type": 29
+        },
+        {
+          "id": "5:4515149916455874654",
+          "name": "fnv1aHash",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "4:125831000704829797",
+  "lastIndexId": "1:2430481325783023594",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [
+    7848440554270060193
+  ],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    5602177051828374057,
+    7304585303296336598,
+    6429916994914948224
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}
