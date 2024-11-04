@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:colora/models.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
