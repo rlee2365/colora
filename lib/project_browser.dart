@@ -314,10 +314,9 @@ class _ProjectBrowserState extends State<ProjectBrowser> {
       final projectMap = Map<String, Project>.fromEntries(
         l.map((e) => MapEntry(e.name, e)),
       );
-      final fuzzyExtract = extractTop(
+      final fuzzyExtract = extractAll(
           query: _searchController.text,
           choices: l.map((e) => e.name).toList(),
-          limit: 10,
           cutoff: 70);
       l = fuzzyExtract.map((e) => projectMap[e.choice]!).toList();
     }
