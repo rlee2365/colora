@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:colora/models.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void showLyricsDialog(BuildContext context, Project project) {
   bool includeTimestamps = false;
@@ -38,27 +42,36 @@ void showLyricsDialog(BuildContext context, Project project) {
                     },
                     child: const Text('Copy to Clipboard'),
                   ),
-
-                  // We can't access directories outside the app document directory
-                  // so saving to a file is out
                   // ElevatedButton(
-                  //   onPressed: () async {
-                  //     final lyrics =
-                  //         project.generateLyrics(timestamps: includeTimestamps);
-                  //     String? outputFile = await FilePicker.platform.saveFile(
-                  //       dialogTitle: 'Save Lyrics',
-                  //       fileName: 'lyrics.txt',
-                  //     );
-
-                  //     if (outputFile != null) {
-                  //       File(outputFile).writeAsString(lyrics);
-                  //       ScaffoldMessenger.of(context).showSnackBar(
-                  //         const SnackBar(content: Text('Lyrics saved to file')),
-                  //       );
-                  //     }
-                  //   },
-                  //   child: const Text('Save to File'),
-                  // ),
+                  //     onPressed: () async {
+                  //       final status = await Permission.storage.request();
+                  //       if (status == PermissionStatus.granted) {
+                  //         final lyrics = project.generateLyrics(
+                  //             timestamps: includeTimestamps);
+                  //         String? outputFile =
+                  //             await FilePicker.platform.saveFile(
+                  //           dialogTitle: 'Save Lyrics File',
+                  //           fileName: '${project.name}.txt',
+                  //           type: FileType.any,
+                  //         );
+                  //         if (outputFile != null) {
+                  //           final file = File(outputFile);
+                  //           await file.writeAsString(lyrics);
+                  //           ScaffoldMessenger.of(context).showSnackBar(
+                  //             SnackBar(
+                  //               content: Text('Lyrics saved to $outputFile'),
+                  //             ),
+                  //           );
+                  //         }
+                  //       } else {
+                  //         ScaffoldMessenger.of(context).showSnackBar(
+                  //           const SnackBar(
+                  //               content: Text(
+                  //                   'Storage permission is required to save the lyrics file')),
+                  //         );
+                  //       }
+                  //     },
+                  //     child: const Text('Save to File')),
                 ],
               ),
             );
