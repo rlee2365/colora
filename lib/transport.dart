@@ -227,7 +227,14 @@ class _AudioTransportState extends State<AudioTransport> {
       icon: const Icon(Icons.chevron_left),
       visualDensity: VisualDensity.compact,
       onPressed: previousBoundary != null
-          ? () => playerController.seekTo(previousBoundary!)
+          ? () async {
+              bool oldLooping = _sectionLooping;
+              _sectionLooping = false;
+              // Avoid section looping while skipping to different sections
+              await playerController.seekTo(
+                  min(previousBoundary!, widget.project.durMilliseconds - 1));
+              _sectionLooping = oldLooping;
+            }
           : null,
     );
   }
@@ -248,7 +255,14 @@ class _AudioTransportState extends State<AudioTransport> {
       icon: const Icon(Icons.chevron_right),
       visualDensity: VisualDensity.compact,
       onPressed: nextBoundary != null
-          ? () => playerController.seekTo(nextBoundary!)
+          ? () async {
+              bool oldLooping = _sectionLooping;
+              _sectionLooping = false;
+              await playerController.seekTo(
+                min(nextBoundary! + 10, widget.project.durMilliseconds - 1),
+              );
+              _sectionLooping = oldLooping;
+            }
           : null,
     );
   }
