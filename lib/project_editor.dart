@@ -72,26 +72,35 @@ class _ProjectEditorState extends State<ProjectEditor> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ActionChip(
-                            label: const Text("Change file"),
-                            onPressed: () async {
-                              final info = await filePicker1();
-                              if (info.targetPath != null) {
-                                final targetPath = info.targetPath!;
-                                //final fileName = info.fileName!;
-                                widget.project.setAppLocalFilePath(targetPath);
-                              }
-                            }),
+                          label: const Text("Export"),
+                          onPressed: () {},
+                          avatar: const Icon(Icons.share),
+                        ),
+                        const SizedBox(width: 16.0),
+                        Expanded(
+                          child: ActionChip(
+                              avatar: Icon(Icons.file_open),
+                              label: Consumer<Project>(
+                                  builder: (context, project, _) {
+                                return Text(
+                                    "File: ${p.basename(project.appLocalFilePath)}",
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: false);
+                              }),
+                              onPressed: () async {
+                                final info = await filePicker1();
+                                if (info.targetPath != null) {
+                                  final targetPath = info.targetPath!;
+                                  //final fileName = info.fileName!;
+                                  widget.project
+                                      .setAppLocalFilePath(targetPath);
+                                }
+                              }),
+                        ),
                         const SizedBox(width: 16),
-                        Expanded(child:
-                            Consumer<Project>(builder: (context, project, _) {
-                          return Text(
-                            p.basename(project.appLocalFilePath),
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
-                          );
-                        })),
                       ],
                     ),
                   ),

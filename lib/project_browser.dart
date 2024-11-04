@@ -5,6 +5,7 @@ import 'package:colora/project_editor.dart';
 import 'package:colora/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as p;
 
 class ProjectCard extends StatelessWidget {
   final Project project;
@@ -60,7 +61,8 @@ class ProjectCard extends StatelessWidget {
                   const Divider(),
                   const SizedBox(height: 4.0),
                   Consumer<Project>(builder: (context, project, _) {
-                    return Text("Instrumental: ${project.appLocalFilePath}",
+                    return Text(
+                        "Instrumental: ${p.basename(project.appLocalFilePath)}",
                         style: Theme.of(context).textTheme.bodySmall);
                   }),
                   const Row()
@@ -84,6 +86,20 @@ class ProjectBrowser extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("colora"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: 160.0,
+              child: TextField(
+                decoration: const InputDecoration(
+                    isDense: true,
+                    labelText: 'search',
+                    border: OutlineInputBorder()),
+              ),
+            ),
+          ),
+        ],
         backgroundColor: theme.colorScheme.primaryContainer,
       ),
       body: Padding(
@@ -108,12 +124,25 @@ class ProjectBrowser extends StatelessWidget {
         child: Row(
           children: [
             const Spacer(),
+            const SizedBox(width: 12.0),
+            IconButton.outlined(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.import_export,
+                )),
+            const SizedBox(width: 12.0),
+            IconButton.outlined(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.delete,
+                )),
+            const SizedBox(width: 12.0),
             IconButton.outlined(
                 onPressed: () {},
                 icon: const Icon(
                   Icons.sort,
                 )),
-            const SizedBox(width: 16.0),
+            const SizedBox(width: 12.0),
             IconButton.outlined(
                 onPressed: () async {
                   showDialog(
