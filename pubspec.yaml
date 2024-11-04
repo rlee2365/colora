@@ -49,6 +49,7 @@ dependencies:
   collection: ^1.18.0
   keyboard_visibility_pro: ^0.0.1
   fuzzywuzzy: ^1.2.0
+  share_plus: ^10.1.1
 
 dev_dependencies:
   flutter_test:

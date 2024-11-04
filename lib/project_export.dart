@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:colora/models.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:path/path.dart' as p;
 
 void showLyricsDialog(BuildContext context, Project project) {
   bool includeTimestamps = false;
@@ -41,36 +42,21 @@ void showLyricsDialog(BuildContext context, Project project) {
                     },
                     child: const Text('Copy to Clipboard'),
                   ),
-                  // ElevatedButton(
-                  //     onPressed: () async {
-                  //       final status = await Permission.storage.request();
-                  //       if (status == PermissionStatus.granted) {
-                  //         final lyrics = project.generateLyrics(
-                  //             timestamps: includeTimestamps);
-                  //         String? outputFile =
-                  //             await FilePicker.platform.saveFile(
-                  //           dialogTitle: 'Save Lyrics File',
-                  //           fileName: '${project.name}.txt',
-                  //           type: FileType.any,
-                  //         );
-                  //         if (outputFile != null) {
-                  //           final file = File(outputFile);
-                  //           await file.writeAsString(lyrics);
-                  //           ScaffoldMessenger.of(context).showSnackBar(
-                  //             SnackBar(
-                  //               content: Text('Lyrics saved to $outputFile'),
-                  //             ),
-                  //           );
-                  //         }
-                  //       } else {
-                  //         ScaffoldMessenger.of(context).showSnackBar(
-                  //           const SnackBar(
-                  //               content: Text(
-                  //                   'Storage permission is required to save the lyrics file')),
-                  //         );
-                  //       }
-                  //     },
-                  //     child: const Text('Save to File')),
+                  // Becauase it's unlikely for us to get MANAGE_EXTERNAL_STORAGE permission
+                  // We cannot save to external storage
+                  // Add the "Share" button below the "Copy to Clipboard" button
+                  ElevatedButton(
+                    onPressed: () async {
+                      final docsDir = await getApplicationDocumentsDirectory();
+                      final targetPath =
+                          p.join(docsDir.path, 'lyrics_${project.name}.txt');
+                      final file = File(targetPath);
+                      await file.writeAsString(project.generateLyrics(
+                          timestamps: includeTimestamps));
+                      await Share.shareXFiles([XFile(targetPath)]);
+                    },
+                    child: const Text('Share as Text File'),
+                  ),
                 ],
               ),
             );
