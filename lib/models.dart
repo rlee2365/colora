@@ -214,4 +214,24 @@ class Project extends ChangeNotifier {
     this.durMilliseconds = durMilliseconds;
     notifyListeners();
   }
+
+  String generateLyrics({bool timestamps = false}) {
+    final sb = StringBuffer();
+    final sections = this.sections.toList();
+    sections.sort((a, b) => a.startMilliseconds.compareTo(b.startMilliseconds));
+    for (final section in sections) {
+      if (timestamps) {
+        final ms = section.startMilliseconds;
+        final dur = Duration(milliseconds: ms);
+        final h = dur.inHours.toString().padLeft(2, '0');
+        final m = dur.inMinutes.remainder(60).toString().padLeft(2, '0');
+        final s = dur.inSeconds.remainder(60).toString().padLeft(2, '0');
+        final ddd =
+            dur.inMilliseconds.remainder(1000).toString().padLeft(3, '0');
+        sb.write('$h:$m:$s:$ddd\n');
+      }
+      sb.write('${section.lyrics}\n');
+    }
+    return sb.toString();
+  }
 }

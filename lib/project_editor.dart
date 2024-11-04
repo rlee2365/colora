@@ -1,4 +1,5 @@
 import 'package:colora/models.dart';
+import 'package:colora/project_export.dart';
 import 'package:colora/section_lyrics.dart';
 import 'package:colora/utils.dart';
 import 'package:colora/transport.dart';
@@ -76,7 +77,9 @@ class _ProjectEditorState extends State<ProjectEditor> {
                       children: [
                         ActionChip(
                           label: const Text("Export"),
-                          onPressed: () {},
+                          onPressed: () {
+                            showLyricsDialog(context, widget.project);
+                          },
                           avatar: const Icon(Icons.share),
                         ),
                         const SizedBox(width: 16.0),
