@@ -59,7 +59,7 @@ class _ProjectEditorState extends State<ProjectEditor> {
           // actions : Change file
         ),
         body: Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -108,6 +108,9 @@ class _ProjectEditorState extends State<ProjectEditor> {
                     ),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 8.0,
               ),
               // Audio waveform
               ChangeNotifierProvider.value(
