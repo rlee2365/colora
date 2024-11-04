@@ -1,4 +1,5 @@
 import 'package:colora/core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:collection/collection.dart';
@@ -31,7 +32,7 @@ class Section extends ChangeNotifier {
   int id = 0;
   String _lyrics = "";
   int _startMilliseconds = 0;
-  Color _color = Colors.white;
+  int _color = Colors.white.value;
 
   Section();
 
@@ -49,14 +50,25 @@ class Section extends ChangeNotifier {
 
   @override
   void notifyListeners() {
-    project.target?.core?.sectionBox.put(this);
+    int? result = project.target?.core?.sectionBox!.put(this);
+    if (kDebugMode && result != null) {
+      print("Wrote section: $id (result: $result)");
+    }
     super.notifyListeners();
   }
 
-  Color get color => _color;
-  set color(Color value) {
-    _color = value;
+  int get color => _color;
+  set color(int c) {
+    _color = c;
     notifyListeners();
+  }
+
+  Color getColor() {
+    return Color(color);
+  }
+
+  void setColor(Color c) {
+    color = c.value;
   }
 
   final project = ToOne<Project>();
@@ -64,13 +76,13 @@ class Section extends ChangeNotifier {
   Map<String, dynamic> toCopyJson() {
     return {
       'lyrics': lyrics,
-      'color': color.value,
+      'color': color,
     };
   }
 
   void fromCopyJson(Map<String, dynamic> json) {
     lyrics = json['lyrics'];
-    color = Color(json['color']);
+    color = json['color'];
   }
 }
 
@@ -141,8 +153,14 @@ class Project extends ChangeNotifier {
             trailingMs: s.indexOf(section) < s.length - 1
                 ? s[s.indexOf(section) + 1].startMilliseconds
                 : null,
-            section: section))
+            section: prepareSection(section)))
         .toList();
+  }
+
+  // Adds transient core info to project
+  Section prepareSection(Section section) {
+    section.project.target!.core = core;
+    return section;
   }
 
   List<int> getMillisecondBoundaries() {
@@ -163,14 +181,18 @@ class Project extends ChangeNotifier {
 
   Section? getSection(int ms) {
     final bounds = getSectionBoundaries();
-    return bounds
+    final retSection = bounds
         .firstWhereOrNull((b) => b.startMs <= ms && b.endMs > ms)
         ?.section;
+    if (retSection != null) {
+      return prepareSection(retSection);
+    }
+    return null;
   }
 
   void removeSection(Section section) {
     sections.remove(section);
-    core!.sectionBox.remove(section.id);
+    core!.sectionBox!.remove(section.id);
     notifyListeners();
   }
 
@@ -184,7 +206,7 @@ class Project extends ChangeNotifier {
     final section = Section();
 
     section.startMilliseconds = startMilliseconds;
-    section.id = core!.sectionBox.put(section);
+    section.id = core!.sectionBox!.put(section);
     section.project.target = this;
     sections.add(section);
     notifyListeners();
@@ -196,7 +218,7 @@ class Project extends ChangeNotifier {
     dateUpdated = DateTime.now();
     super.notifyListeners();
     if (id == 0) return;
-    core?.projectBox.put(this);
+    core?.projectBox!.put(this);
   }
 
   void setName(String name) {

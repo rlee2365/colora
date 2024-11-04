@@ -109,7 +109,7 @@ class _ProjectEditorState extends State<ProjectEditor> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8.0,
               ),
               // Audio waveform

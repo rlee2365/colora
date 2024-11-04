@@ -81,14 +81,14 @@ class _SectionOverlayState extends State<SectionOverlay> {
                                         sectionBoundary.startMs) -
                                     SectionOverlay.sectionGapWidth,
                                 height: SectionOverlay.sectionBarHeight,
-                                color: section.color,
+                                color: section.getColor(),
                               ),
                             ),
                             Container(
                                 width: 1,
                                 height: widget.transportHeight +
                                     SectionOverlay.dragExtraMargin,
-                                color: section.color),
+                                color: section.getColor()),
                             Positioned(
                                 top: widget.transportHeight +
                                     SectionOverlay.dragExtraMargin -
@@ -98,7 +98,7 @@ class _SectionOverlayState extends State<SectionOverlay> {
                                   width: SectionOverlay.dragHandleDiameter / 2,
                                   height: SectionOverlay.dragHandleDiameter / 2,
                                   decoration: BoxDecoration(
-                                      color: section.color,
+                                      color: section.getColor(),
                                       borderRadius: BorderRadius.circular(
                                           SectionOverlay.dragHandleDiameter)),
                                 )),

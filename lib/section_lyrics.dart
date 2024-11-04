@@ -34,7 +34,7 @@ class _SectionLyricsState extends State<SectionLyrics> {
   void initState() {
     super.initState();
     _lyricsController.text = widget.section.lyrics;
-    selectedColor = widget.section.color;
+    selectedColor = widget.section.getColor();
   }
 
   @override
@@ -60,7 +60,7 @@ class _SectionLyricsState extends State<SectionLyrics> {
                       "lyrics",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: widget.section.color),
+                          color: widget.section.getColor()),
                     ),
 
                     const Spacer(),
@@ -96,7 +96,7 @@ class _SectionLyricsState extends State<SectionLyrics> {
                         setState(() {
                           // Assuming additional state is needed to track selected color
                           selectedColor = newColor!;
-                          section.color = newColor;
+                          section.setColor(newColor);
                         });
                       },
                       items: colors.map<DropdownMenuItem<Color>>((Color color) {

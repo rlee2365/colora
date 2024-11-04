@@ -9,9 +9,9 @@ import 'package:path/path.dart' as p;
 
 class ColoraCore extends ChangeNotifier {
   static const dbDir = 'Colora';
-  late final Store store;
-  late final Box<Project> projectBox;
-  late final Box<Section> sectionBox;
+  Store? store;
+  Box<Project>? projectBox;
+  Box<Section>? sectionBox;
   List<Project> projects = [];
   final waveformCache = WaveformCache();
   late final ColoraSettings settings;
@@ -28,6 +28,11 @@ class ColoraCore extends ChangeNotifier {
 
   Future<void> setupObjectBox() async {
     final docsDir = await getApplicationDocumentsDirectory();
+    projects.clear();
+    notifyListeners();
+    if (this.store != null) {
+      this.store!.close();
+    }
     final store = await openStore(directory: p.join(docsDir.path, dbDir));
     this.store = store;
     projectBox = store.box<Project>();
@@ -41,7 +46,7 @@ class ColoraCore extends ChangeNotifier {
   }
 
   void loadFromObjectBox() {
-    projects = projectBox.getAll();
+    projects = projectBox!.getAll();
     for (final project in projects) {
       project.core = this;
     }
@@ -54,7 +59,7 @@ class ColoraCore extends ChangeNotifier {
     project.setName(name);
     project.setAppLocalFilePath(appLocalFilePath);
     project.setDurMilliseconds(durMilliseconds);
-    project.id = projectBox.put(project);
+    project.id = projectBox!.put(project);
     project.core = this;
     projects.add(project);
     notifyListeners();
@@ -63,7 +68,7 @@ class ColoraCore extends ChangeNotifier {
 
   void deleteProject(Project project) {
     projects.remove(project);
-    projectBox.remove(project.id);
+    projectBox!.remove(project.id);
     notifyListeners();
   }
 }

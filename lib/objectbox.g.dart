@@ -59,7 +59,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(3, 306749482424188798),
       name: 'Section',
-      lastPropertyId: const obx_int.IdUid(4, 2567995347118315330),
+      lastPropertyId: const obx_int.IdUid(5, 2010890195495838524),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -83,7 +83,12 @@ final _entities = <obx_int.ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const obx_int.IdUid(1, 2430481325783023594),
-            relationTarget: 'Project')
+            relationTarget: 'Project'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 2010890195495838524),
+            name: 'color',
+            type: 6,
+            flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
@@ -228,11 +233,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Section object, fb.Builder fbb) {
           final lyricsOffset = fbb.writeString(object.lyrics);
-          fbb.startTable(5);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, lyricsOffset);
           fbb.addInt64(2, object.startMilliseconds);
           fbb.addInt64(3, object.project.targetId);
+          fbb.addInt64(4, object.color);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -245,7 +251,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
             ..lyrics = const fb.StringReader(asciiOptimization: true)
                 .vTableGet(buffer, rootOffset, 6, '')
             ..startMilliseconds =
-                const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)
+            ..color =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
           object.project.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
           object.project.attach(store);
@@ -335,6 +343,10 @@ class Section_ {
   /// See [Section.project].
   static final project =
       obx.QueryRelationToOne<Section, Project>(_entities[1].properties[3]);
+
+  /// See [Section.color].
+  static final color =
+      obx.QueryIntegerProperty<Section>(_entities[1].properties[4]);
 }
 
 /// [CachedWaveform] entity fields to define ObjectBox queries.

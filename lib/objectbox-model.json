@@ -39,7 +39,7 @@
     },
     {
       "id": "3:306749482424188798",
-      "lastPropertyId": "4:2567995347118315330",
+      "lastPropertyId": "5:2010890195495838524",
       "name": "Section",
       "properties": [
         {
@@ -65,6 +65,11 @@
           "flags": 520,
           "indexId": "1:2430481325783023594",
           "relationTarget": "Project"
+        },
+        {
+          "id": "5:2010890195495838524",
+          "name": "color",
+          "type": 6
         }
       ],
       "relations": []

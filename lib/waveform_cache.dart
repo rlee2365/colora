@@ -2,12 +2,12 @@ import 'package:colora/models.dart';
 import 'package:colora/objectbox.g.dart';
 
 class WaveformCache {
-  late final Box<CachedWaveform> box;
+  Box<CachedWaveform>? box;
   final Map<(String, int), CachedWaveform> _cache = {};
 
   Future<void> setup(Store store) async {
     box = store.box<CachedWaveform>();
-    for (final cachedWaveform in box.getAll()) {
+    for (final cachedWaveform in box!.getAll()) {
       _cache[(cachedWaveform.fnv1aHash, cachedWaveform.noOfSamples)] =
           cachedWaveform;
     }
@@ -31,7 +31,7 @@ class WaveformCache {
     boxWaveform.noOfSamples = noOfSamples;
     boxWaveform.waveform = waveform;
     _cache[(fnv1aHash, noOfSamples)] = boxWaveform;
-    boxWaveform.id = box.put(boxWaveform);
+    boxWaveform.id = box!.put(boxWaveform);
     // print("Stored waveform: $fnv1aHash $noOfSamples");
     return boxWaveform;
   }

@@ -1,5 +1,6 @@
 import 'package:colora/core.dart';
 import 'package:colora/utils.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -89,6 +90,7 @@ class SettingsRouteState extends State<SettingsRoute> {
                 const SizedBox(height: 8.0),
               ],
             ),
+            const Divider(),
             const SizedBox(height: 8.0),
             TextButton.icon(
               icon: const Icon(Icons.backup),
@@ -101,6 +103,18 @@ class SettingsRouteState extends State<SettingsRoute> {
                   XFile(await widget.core.backup
                       .createBackup(p.join(docsDir.path, backupName))),
                 ]);
+              },
+            ),
+            const SizedBox(height: 8.0),
+            TextButton.icon(
+              icon: const Icon(Icons.restore_page),
+              label: const Text('load backup'),
+              onPressed: () async {
+                final file = await FilePicker.platform.pickFiles();
+                if (file != null) {
+                  final backupFile = file.files.single.path;
+                  await widget.core.backup.loadBackup(backupFile!);
+                }
               },
             )
           ],
