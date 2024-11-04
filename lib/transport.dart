@@ -5,6 +5,7 @@ import 'package:colora/section_overlay.dart';
 import 'package:colora/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:keyboard_visibility_pro/keyboard_visibility_pro.dart';
 import 'dart:math';
 
 import 'package:provider/provider.dart';
@@ -35,7 +36,8 @@ class AudioTransport extends StatefulWidget {
 }
 
 class _AudioTransportState extends State<AudioTransport> {
-  static const double transportHeight = 60.0;
+  static const double fullTransportHeight = 60.0, collapsedHeight = 20.0;
+  double transportHeight = fullTransportHeight;
   //// [ RecorderController]
   PlayerController playerController = PlayerController();
   PlayerController durationController = PlayerController();
@@ -297,182 +299,198 @@ class _AudioTransportState extends State<AudioTransport> {
       child: Row(
         children: [
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                LayoutBuilder(builder: (context, constraints) {
-                  final trackPad = trackPadding(constraints);
-                  return Stack(
-                    children: [
-                      Container(
-                        width: pixelsPerSecond * d * 1000,
-                        height: transportHeight,
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.onSecondaryFixed,
-                        ),
-                      ),
-                      Center(
-                        // play marker
-                        child: Container(
-                          width: 1,
+            child: KeyboardVisibility(
+              onChanged: (visible) {
+                setState(() {
+                  transportHeight =
+                      visible ? collapsedHeight : fullTransportHeight;
+                });
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  LayoutBuilder(builder: (context, constraints) {
+                    final trackPad = trackPadding(constraints);
+                    return Stack(
+                      children: [
+                        AnimatedContainer(
+                          width: pixelsPerSecond * d * 1000,
                           height: transportHeight,
-                          color: Colors.red,
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        controller: sectionScrollController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: trackPad,
-                              child: SectionOverlay(
-                                pixelsPerSecond: pixelsPerSecond,
-                                project: widget.project,
-                                transportHeight: transportHeight,
-                                dragNotifier: sectionDragNotifier,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: transportHeight,
-                        child: NotificationListener<ScrollNotification>(
-                          onNotification: (n) {
-                            if (n is ScrollStartNotification) {
-                              _avoidUpdateTransport = true;
-                            } else if (n is ScrollEndNotification) {
-                              _avoidUpdateTransport = false;
-                            }
-                            return false;
-                          },
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            controller: scrollController,
-                            child: StreamBuilder<List<double>>(
-                                stream: waveformDataController.stream,
-                                builder: (context, snapshot) {
-                                  if (snapshot.data != null) {
-                                    waveformData = snapshot.data!;
-                                  }
-                                  //print("Building with $waveformData");
-                                  return Padding(
-                                    padding: trackPad,
-                                    child: Stack(
-                                      children: [
-                                        Center(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              for (final value in waveformData)
-                                                Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                    paddingSide,
-                                                    0,
-                                                    paddingSide,
-                                                    0,
-                                                  ),
-                                                  child: Container(
-                                                    width: pixelsPerBox,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              pixelsPerSample /
-                                                                  2),
-                                                      color: theme.colorScheme
-                                                          .secondary,
-                                                    ),
-                                                    height: (pow(value,
-                                                            1 / squeezeExponent)) *
-                                                        transportHeight,
-                                                  ),
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }),
+                          duration: Duration(milliseconds: 100),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.onSecondaryFixed,
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                }),
-                const SizedBox(height: 8.0),
-                Row(
-                  children: [
-                    const Spacer(),
-                    MultiProvider(
-                        providers: [
-                          ChangeNotifierProvider.value(
-                              value: sectionDragNotifier),
-                          ChangeNotifierProvider.value(value: scrollController),
-                        ],
-                        child: Consumer3<ScrollController, Project,
-                                SectionDragNotifier>(
-                            builder: (context, _, __, ___, ____) =>
-                                prevSectionButton(context))),
-                    const SizedBox(width: 4.0),
-                    IconButton.outlined(
-                        onPressed: () async {
-                          playerController.playerState == PlayerState.playing
-                              ? await playerController.pausePlayer()
-                              : await playerController.startPlayer(
-                                  finishMode: FinishMode.loop);
-                          setState(() {});
-                        },
-                        icon: Icon(
-                            playerController.playerState == PlayerState.playing
-                                ? Icons.pause
-                                : Icons.play_arrow)),
-                    const SizedBox(width: 4.0),
-                    ChangeNotifierProvider.value(
-                      value: sectionDragNotifier,
-                      child: ChangeNotifierProvider.value(
-                          value: scrollController,
+                        Center(
+                          // play marker
+                          child: AnimatedContainer(
+                            width: 1,
+                            height: transportHeight,
+                            duration: Duration(milliseconds: 100),
+                            color: Colors.red,
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          controller: sectionScrollController,
+                          physics: const NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: trackPad,
+                                child: SectionOverlay(
+                                  pixelsPerSecond: pixelsPerSecond,
+                                  project: widget.project,
+                                  transportHeight: transportHeight,
+                                  dragNotifier: sectionDragNotifier,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        AnimatedContainer(
+                          height: transportHeight,
+                          duration: Duration(milliseconds: 100),
+                          child: NotificationListener<ScrollNotification>(
+                            onNotification: (n) {
+                              if (n is ScrollStartNotification) {
+                                _avoidUpdateTransport = true;
+                              } else if (n is ScrollEndNotification) {
+                                _avoidUpdateTransport = false;
+                              }
+                              return false;
+                            },
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              controller: scrollController,
+                              child: StreamBuilder<List<double>>(
+                                  stream: waveformDataController.stream,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.data != null) {
+                                      waveformData = snapshot.data!;
+                                    }
+                                    //print("Building with $waveformData");
+                                    return Padding(
+                                      padding: trackPad,
+                                      child: Stack(
+                                        children: [
+                                          Center(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                for (final value
+                                                    in waveformData)
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                      paddingSide,
+                                                      0,
+                                                      paddingSide,
+                                                      0,
+                                                    ),
+                                                    child: Container(
+                                                      width: pixelsPerBox,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                pixelsPerSample /
+                                                                    2),
+                                                        color: theme.colorScheme
+                                                            .secondary,
+                                                      ),
+                                                      height: (pow(value,
+                                                              1 / squeezeExponent)) *
+                                                          transportHeight,
+                                                    ),
+                                                  ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+                  const SizedBox(height: 8.0),
+                  Row(
+                    children: [
+                      const Spacer(),
+                      MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider.value(
+                                value: sectionDragNotifier),
+                            ChangeNotifierProvider.value(
+                                value: scrollController),
+                          ],
                           child: Consumer3<ScrollController, Project,
                                   SectionDragNotifier>(
-                              builder: (context, _, __, ___, ____) {
-                            return addSectionButton(context);
-                          })),
-                    ),
-                    const SizedBox(width: 4.0),
-                    ChangeNotifierProvider.value(
-                      value: sectionDragNotifier,
-                      child: ChangeNotifierProvider.value(
-                          value: scrollController,
-                          child: StreamBuilder(
-                              stream: playerController.onCurrentDurationChanged,
-                              builder: (context, snapshot) {
-                                return Consumer3<ScrollController, Project,
-                                        SectionDragNotifier>(
-                                    builder: (context, _, __, ___, ____) {
-                                  return removeSectionButton(context);
-                                });
-                              })),
-                    ),
-                    const SizedBox(width: 4.0),
-                    addSectionLoopButton(context),
-                    const SizedBox(width: 8.0),
-                    MultiProvider(
-                        providers: [
-                          ChangeNotifierProvider.value(
-                              value: sectionDragNotifier),
-                          ChangeNotifierProvider.value(value: scrollController),
-                        ],
-                        child: Consumer3<ScrollController, Project,
-                                SectionDragNotifier>(
-                            builder: (context, _, __, ___, ____) =>
-                                nextSectionButton(context))),
-                    const Spacer(),
-                  ],
-                )
-              ],
+                              builder: (context, _, __, ___, ____) =>
+                                  prevSectionButton(context))),
+                      const SizedBox(width: 4.0),
+                      IconButton.outlined(
+                          onPressed: () async {
+                            playerController.playerState == PlayerState.playing
+                                ? await playerController.pausePlayer()
+                                : await playerController.startPlayer(
+                                    finishMode: FinishMode.loop);
+                            setState(() {});
+                          },
+                          icon: Icon(playerController.playerState ==
+                                  PlayerState.playing
+                              ? Icons.pause
+                              : Icons.play_arrow)),
+                      const SizedBox(width: 4.0),
+                      ChangeNotifierProvider.value(
+                        value: sectionDragNotifier,
+                        child: ChangeNotifierProvider.value(
+                            value: scrollController,
+                            child: Consumer3<ScrollController, Project,
+                                    SectionDragNotifier>(
+                                builder: (context, _, __, ___, ____) {
+                              return addSectionButton(context);
+                            })),
+                      ),
+                      const SizedBox(width: 4.0),
+                      ChangeNotifierProvider.value(
+                        value: sectionDragNotifier,
+                        child: ChangeNotifierProvider.value(
+                            value: scrollController,
+                            child: StreamBuilder(
+                                stream:
+                                    playerController.onCurrentDurationChanged,
+                                builder: (context, snapshot) {
+                                  return Consumer3<ScrollController, Project,
+                                          SectionDragNotifier>(
+                                      builder: (context, _, __, ___, ____) {
+                                    return removeSectionButton(context);
+                                  });
+                                })),
+                      ),
+                      const SizedBox(width: 4.0),
+                      addSectionLoopButton(context),
+                      const SizedBox(width: 8.0),
+                      MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider.value(
+                                value: sectionDragNotifier),
+                            ChangeNotifierProvider.value(
+                                value: scrollController),
+                          ],
+                          child: Consumer3<ScrollController, Project,
+                                  SectionDragNotifier>(
+                              builder: (context, _, __, ___, ____) =>
+                                  nextSectionButton(context))),
+                      const Spacer(),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ],

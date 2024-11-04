@@ -58,74 +58,77 @@ class _ProjectEditorState extends State<ProjectEditor> {
           backgroundColor: theme.colorScheme.primaryContainer,
           // actions : Change file
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              KeyboardVisibility(
-                onChanged: (state) => setState(() {
-                  showHeader = !state;
-                }),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 100),
-                  height: showHeader ? 40 : 0,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ActionChip(
-                          label: const Text("export"),
-                          onPressed: () {
-                            showLyricsDialog(context, widget.project);
-                          },
-                          avatar: const Icon(Icons.share),
-                        ),
-                        const SizedBox(width: 16.0),
-                        Expanded(
-                          child: ActionChip(
-                              avatar: const Icon(Icons.file_open),
-                              label: Consumer<Project>(
-                                  builder: (context, project, _) {
-                                return Text(
-                                    "file: ${p.basename(project.appLocalFilePath)}",
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: false);
-                              }),
-                              onPressed: () async {
-                                final info = await filePicker1();
-                                if (info.targetPath != null) {
-                                  final targetPath = info.targetPath!;
-                                  //final fileName = info.fileName!;
-                                  widget.project
-                                      .setAppLocalFilePath(targetPath);
-                                }
-                              }),
-                        ),
-                        const SizedBox(width: 16),
-                      ],
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                KeyboardVisibility(
+                  onChanged: (state) => setState(() {
+                    showHeader = !state;
+                  }),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 100),
+                    height: showHeader ? 40 : 0,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ActionChip(
+                            label: const Text("export"),
+                            onPressed: () {
+                              showLyricsDialog(context, widget.project);
+                            },
+                            avatar: showHeader ? const Icon(Icons.share) : null,
+                          ),
+                          const SizedBox(width: 16.0),
+                          Expanded(
+                            child: ActionChip(
+                                avatar: showHeader
+                                    ? const Icon(Icons.file_open)
+                                    : null,
+                                label: Consumer<Project>(
+                                    builder: (context, project, _) {
+                                  return Text(
+                                      "file: ${p.basename(project.appLocalFilePath)}",
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: false);
+                                }),
+                                onPressed: () async {
+                                  final info = await filePicker1();
+                                  if (info.targetPath != null) {
+                                    final targetPath = info.targetPath!;
+                                    //final fileName = info.fileName!;
+                                    widget.project
+                                        .setAppLocalFilePath(targetPath);
+                                  }
+                                }),
+                          ),
+                          const SizedBox(width: 16),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 8.0,
-              ),
-              // Audio waveform
-              ChangeNotifierProvider.value(
-                value: widget.project.updatePathNotifier,
-                child: Consumer<UpdatePathNotifier>(builder: (context, _, __) {
-                  return AudioTransport(
-                    key: ValueKey(widget.project.appLocalFilePath),
-                    project: widget.project,
-                    controller: transportController,
-                  );
-                }),
-              ),
-              // Text editor
-              Expanded(
-                child: Card(
+                const SizedBox(
+                  height: 8.0,
+                ),
+                // Audio waveform
+                ChangeNotifierProvider.value(
+                  value: widget.project.updatePathNotifier,
+                  child:
+                      Consumer<UpdatePathNotifier>(builder: (context, _, __) {
+                    return AudioTransport(
+                      key: ValueKey(widget.project.appLocalFilePath),
+                      project: widget.project,
+                      controller: transportController,
+                    );
+                  }),
+                ),
+                // Text editor
+                Card(
                   color: theme.colorScheme.onSecondaryFixed,
                   elevation: 10,
                   shape: RoundedRectangleBorder(
@@ -167,9 +170,9 @@ class _ProjectEditorState extends State<ProjectEditor> {
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

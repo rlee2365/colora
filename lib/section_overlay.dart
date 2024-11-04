@@ -26,7 +26,7 @@ class SectionOverlay extends StatefulWidget {
 
   static const double sectionGapWidth = 2;
   static const double sectionBarHeight = 4;
-  static const double dragExtraMargin = 48;
+  static const double dragExtraMargin = 24;
   static const double dragHandleDiameter = 48;
   static const double dragActivateExtraDiameter = 48;
 
@@ -77,9 +77,11 @@ class _SectionOverlayState extends State<SectionOverlay> {
                               padding: const EdgeInsets.only(
                                   right: SectionOverlay.sectionGapWidth),
                               child: Container(
-                                width: msToPixels(sectionBoundary.endMs -
-                                        sectionBoundary.startMs) -
-                                    SectionOverlay.sectionGapWidth,
+                                width: max(
+                                    msToPixels(sectionBoundary.endMs -
+                                            sectionBoundary.startMs) -
+                                        SectionOverlay.sectionGapWidth,
+                                    0),
                                 height: SectionOverlay.sectionBarHeight,
                                 color: section.getColor(),
                               ),

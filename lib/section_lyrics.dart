@@ -121,18 +121,17 @@ class _SectionLyricsState extends State<SectionLyrics> {
               ),
             ),
             if (showHeader) const Divider(),
-            Expanded(
-              child: SizedBox(
-                width: 400,
-                child: TextField(
-                  decoration: null,
-                  maxLines: null,
-                  controller: _lyricsController,
-                  onChanged: (value) {
-                    section.lyrics = value;
-                  },
-                  style: widget.theme.textTheme.bodyMedium,
-                ),
+            SizedBox(
+              width: 400,
+              height: 800,
+              child: TextField(
+                decoration: null,
+                maxLines: null,
+                controller: _lyricsController,
+                onChanged: (value) {
+                  section.lyrics = value;
+                },
+                style: widget.theme.textTheme.bodyMedium,
               ),
             ),
           ],
