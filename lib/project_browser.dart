@@ -272,7 +272,7 @@ class _ProjectBrowserState extends State<ProjectBrowser> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Confirm Delete'),
-          content: const Text('Are you sure you want to delete?'),
+          content: const Text('Delete selected projects?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
