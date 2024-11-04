@@ -36,6 +36,7 @@ class AudioTransport extends StatefulWidget {
 
 class _AudioTransportState extends State<AudioTransport> {
   static const double transportHeight = 60.0;
+  //// [ RecorderController]
   PlayerController playerController = PlayerController();
   PlayerController durationController = PlayerController();
   ScrollController scrollController = ScrollController();

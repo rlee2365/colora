@@ -1,9 +1,7 @@
-import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:colora/models.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_visibility_pro/keyboard_visibility_pro.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/services.dart';
 
 class SectionLyrics extends StatefulWidget {
   const SectionLyrics({
