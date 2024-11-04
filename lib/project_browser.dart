@@ -3,6 +3,7 @@ import 'package:colora/add_project.dart';
 import 'package:colora/core.dart';
 import 'package:colora/models.dart';
 import 'package:colora/project_editor.dart';
+import 'package:colora/settings.dart';
 import 'package:colora/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -212,9 +213,17 @@ class _ProjectBrowserState extends State<ProjectBrowser> {
                     padding: EdgeInsets.all(4.0), label: Icon(Icons.sort))),
             const SizedBox(width: 16.0),
             IconButton.outlined(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return ChangeNotifierProvider.value(
+                          value: widget.core.settings,
+                          child: const SettingsRoute());
+                    },
+                  ));
+                },
                 icon: const Icon(
-                  Icons.import_export,
+                  Icons.settings,
                 )),
             const SizedBox(width: 12.0),
             IconButton.outlined(
