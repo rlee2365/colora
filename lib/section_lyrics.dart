@@ -129,10 +129,8 @@ class _SectionLyricsState extends State<SectionLyrics> {
                 ),
               ),
             ),
-            if (showHeader) const Divider(),
-            SizedBox(
-              width: 400,
-              height: MediaQuery.of(context).size.height * 0.8,
+            if (showHeaderActual) const Divider(),
+            Expanded(
               child: TextField(
                 decoration: null,
                 maxLines: null,
