@@ -2,7 +2,6 @@ import 'package:colora/core.dart';
 import 'package:colora/project_browser.dart';
 import 'package:colora/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +36,7 @@ class ColoraApp extends StatelessWidget {
           theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
                   seedColor: settings.seedColor, brightness: Brightness.dark),
-              fontFamily: GoogleFonts.sourceSerif4().fontFamily),
+              fontFamily: 'serif'),
           home: ProjectBrowser(
             core: core,
           ),
