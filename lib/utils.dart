@@ -35,6 +35,16 @@ String formatDuration1(Duration duration) {
   return '$minutes:${seconds.toString().padLeft(2, '0')}';
 }
 
+String formatDuration2(Duration duration) {
+  int minutes = duration.inMinutes;
+  int seconds = duration.inSeconds.remainder(60);
+  int milliseconds = duration.inMilliseconds.remainder(1000);
+
+  return '${minutes.toString().padLeft(2, '0')}:'
+      '${seconds.toString().padLeft(2, '0')}:'
+      '${milliseconds.toString().padLeft(3, '0')}';
+}
+
 class FilePickerInfo {
   String? targetPath;
   String? fileName;

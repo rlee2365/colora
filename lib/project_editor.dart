@@ -85,7 +85,7 @@ class _ProjectEditorState extends State<ProjectEditor> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         ActionChip(
                           label: const Text("export"),
@@ -96,7 +96,8 @@ class _ProjectEditorState extends State<ProjectEditor> {
                               showHeaderActual ? const Icon(Icons.share) : null,
                         ),
                         const SizedBox(width: 16.0),
-                        Expanded(
+                        SizedBox(
+                          width: 180,
                           child: ActionChip(
                               avatar: showHeaderActual
                                   ? const Icon(Icons.file_open)
@@ -119,6 +120,15 @@ class _ProjectEditorState extends State<ProjectEditor> {
                               }),
                         ),
                         const SizedBox(width: 16),
+                        ChangeNotifierProvider.value(
+                            value: transportController,
+                            child: Consumer<AudioTransportController>(
+                                builder: (context, controller, _) {
+                              return Text(
+                                  formatDuration2(Duration(
+                                      milliseconds: controller.currentTimeMs)),
+                                  style: theme.textTheme.bodySmall);
+                            }))
                       ],
                     ),
                   ),
