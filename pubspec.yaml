@@ -52,6 +52,7 @@ dependencies:
   share_plus: ^10.1.1
   shared_preferences: ^2.3.2
   flutter_archive: ^6.0.3
+  flutter_svg: ^2.0.12
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +79,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/image/colora_textonly.svg
   # assets:
     # - assets/sound/test.mp3
   # assets:

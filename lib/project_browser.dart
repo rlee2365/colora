@@ -6,6 +6,7 @@ import 'package:colora/project_editor.dart';
 import 'package:colora/settings.dart';
 import 'package:colora/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:path/path.dart' as p;
@@ -155,7 +156,14 @@ class _ProjectBrowserState extends State<ProjectBrowser> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("colora"),
+        //title: const Text("colora"),
+        title: SvgPicture.asset(
+          'assets/image/colora_textonly.svg',
+          colorFilter: ColorFilter.mode(
+            theme.colorScheme.onSurface,
+            BlendMode.srcIn,
+          ),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
