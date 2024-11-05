@@ -27,6 +27,7 @@ class _ProjectEditorState extends State<ProjectEditor> {
       AudioTransportController();
   final SectionDragNotifier sectionDragNotifier = SectionDragNotifier();
   final TextEditingController scratchpadController = TextEditingController();
+  final ScrollController scratchpadScrollController = ScrollController();
   bool showHeader = true;
 
   @override
@@ -34,6 +35,7 @@ class _ProjectEditorState extends State<ProjectEditor> {
     super.dispose();
     titleController.dispose();
     scratchpadController.dispose();
+    scratchpadScrollController.dispose();
   }
 
   @override
@@ -41,6 +43,8 @@ class _ProjectEditorState extends State<ProjectEditor> {
     super.initState();
     titleController.text = widget.project.name;
     scratchpadController.text = widget.project.scratchpad;
+    // the scratchpad autoscrolling doesn't fire an event picked up by the listener
+    // so we'll probably have to store the offset somewhere when switching states so we can jump back
   }
 
   @override
@@ -151,31 +155,8 @@ class _ProjectEditorState extends State<ProjectEditor> {
                     child: PageView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        swipeHint(theme, text: "scratchpad"),
-                        Column(children: [
-                          const Text("scratchpad",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              )),
-                          const Divider(),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 8.0,
-                                right: 16.0,
-                              ),
-                              child: TextField(
-                                controller: scratchpadController,
-                                decoration: null,
-                                maxLines: null,
-                                style: theme.textTheme.bodyMedium,
-                                onChanged: (value) {
-                                  widget.project.setScratchpad(value);
-                                },
-                              ),
-                            ),
-                          )
-                        ])
+                        sectionLyrics(theme, text: "scratchpad"),
+                        scratchpad(theme)
                       ],
                     ),
                   ),
@@ -188,7 +169,39 @@ class _ProjectEditorState extends State<ProjectEditor> {
     );
   }
 
-  Stack swipeHint(ThemeData theme, {required String text, bool left = false}) {
+  // Problem: I think the textfield being rebuilt is triggering the scroll
+  // controller to go back to the top
+  Column scratchpad(ThemeData theme) {
+    return Column(children: [
+      const Text("scratchpad",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          )),
+      const Divider(),
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 8.0,
+            right: 16.0,
+          ),
+          child: TextField(
+            key: const PageStorageKey('scratchpad'),
+            controller: scratchpadController,
+            scrollController: scratchpadScrollController,
+            decoration: null,
+            maxLines: null,
+            style: theme.textTheme.bodyMedium,
+            onChanged: (value) {
+              widget.project.setScratchpad(value);
+            },
+          ),
+        ),
+      )
+    ]);
+  }
+
+  Stack sectionLyrics(ThemeData theme,
+      {required String text, bool left = false}) {
     return Stack(
       children: [
         Center(
