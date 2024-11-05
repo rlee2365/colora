@@ -4,6 +4,7 @@ import 'package:colora/section_lyrics.dart';
 import 'package:colora/section_overlay.dart';
 import 'package:colora/utils.dart';
 import 'package:colora/transport.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_visibility_pro/keyboard_visibility_pro.dart';
 import 'package:provider/provider.dart';
@@ -25,12 +26,14 @@ class _ProjectEditorState extends State<ProjectEditor> {
   final AudioTransportController transportController =
       AudioTransportController();
   final SectionDragNotifier sectionDragNotifier = SectionDragNotifier();
+  final TextEditingController scratchpadController = TextEditingController();
   bool showHeader = true;
 
   @override
   void dispose() {
     super.dispose();
     titleController.dispose();
+    scratchpadController.dispose();
   }
 
   @override
@@ -42,6 +45,8 @@ class _ProjectEditorState extends State<ProjectEditor> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final showHeaderActual =
+        showHeader || (!widget.project.core!.settings.collapseHeadersOnFocus);
     return ChangeNotifierProvider.value(
       value: widget.project,
       child: Scaffold(
@@ -72,7 +77,7 @@ class _ProjectEditorState extends State<ProjectEditor> {
                   }),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 100),
-                    height: showHeader ? 40 : 0,
+                    height: showHeaderActual ? 40 : 0,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
                       child: Row(
@@ -83,12 +88,14 @@ class _ProjectEditorState extends State<ProjectEditor> {
                             onPressed: () {
                               showLyricsDialog(context, widget.project);
                             },
-                            avatar: showHeader ? const Icon(Icons.share) : null,
+                            avatar: showHeaderActual
+                                ? const Icon(Icons.share)
+                                : null,
                           ),
                           const SizedBox(width: 16.0),
                           Expanded(
                             child: ActionChip(
-                                avatar: showHeader
+                                avatar: showHeaderActual
                                     ? const Icon(Icons.file_open)
                                     : null,
                                 label: Consumer<Project>(
@@ -131,50 +138,61 @@ class _ProjectEditorState extends State<ProjectEditor> {
                   }),
                 ),
                 // Text editor
-                Card(
-                  color: theme.colorScheme.onSecondaryFixed,
-                  elevation: 10,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(
-                        color: theme.colorScheme.onSecondary,
-                        width: 2.0,
-                      )),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                    child: MultiProvider(
-                      providers: [
-                        ChangeNotifierProvider.value(value: widget.project),
-                        ChangeNotifierProvider.value(
-                            value: transportController),
-                        ChangeNotifierProvider.value(
-                            value: sectionDragNotifier),
-                      ],
-                      child: Consumer3<AudioTransportController, Project,
-                              SectionDragNotifier>(
-                          builder: (context, controller, project, _, __) {
-                        final project = widget.project;
-                        final section =
-                            project.getSection(controller.currentTimeMs);
-                        if (section != null) {
-                          return SectionLyrics(
-                            key: ValueKey(section.id),
-                            theme: theme,
-                            section: section,
-                          );
-                        } else {
-                          return const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("create a section to edit lyrics"),
-                              ],
-                            ),
-                          );
-                        }
-                      }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Card(
+                    color: theme.colorScheme.onSecondaryFixed,
+                    elevation: 10,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(
+                          color: theme.colorScheme.onSecondary,
+                          width: 2.0,
+                        )),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                      child: PageView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          MultiProvider(
+                            providers: [
+                              ChangeNotifierProvider.value(
+                                  value: widget.project),
+                              ChangeNotifierProvider.value(
+                                  value: transportController),
+                              ChangeNotifierProvider.value(
+                                  value: sectionDragNotifier),
+                            ],
+                            child: Consumer3<AudioTransportController, Project,
+                                    SectionDragNotifier>(
+                                builder: (context, controller, project, _, __) {
+                              final project = widget.project;
+                              final section =
+                                  project.getSection(controller.currentTimeMs);
+                              if (section != null) {
+                                return SectionLyrics(
+                                  key: ValueKey(section.id),
+                                  theme: theme,
+                                  section: section,
+                                  core: project.core!,
+                                );
+                              } else {
+                                return const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("create a section to edit lyrics"),
+                                    ],
+                                  ),
+                                );
+                              }
+                            }),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 )

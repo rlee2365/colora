@@ -54,6 +54,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  bottom_sheet_bar:
+    dependency: "direct main"
+    description:
+      name: bottom_sheet_bar
+      sha256: "566995e216d04f3cdefb717715acd54bd7ad7a32a2b273ac8a659cb6d08f76cb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.10"
   build:
     dependency: transitive
     description:
@@ -453,6 +461,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.1"
+  measure_size:
+    dependency: transitive
+    description:
+      name: measure_size
+      sha256: "5faef74474db7bbcd8c6f301d8a09abc69b8e999b85167825e532f1a55c38ae6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   meta:
     dependency: transitive
     description:

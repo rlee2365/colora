@@ -1,3 +1,4 @@
+import 'package:colora/core.dart';
 import 'package:colora/models.dart';
 import 'package:colora/section_overlay.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,12 @@ class SectionLyrics extends StatefulWidget {
     super.key,
     required this.theme,
     required this.section,
+    required this.core,
   });
 
   final ThemeData theme;
   final Section section;
+  final ColoraCore core;
 
   @override
   State<SectionLyrics> createState() => _SectionLyricsState();
@@ -40,6 +43,9 @@ class _SectionLyricsState extends State<SectionLyrics> {
 
   @override
   Widget build(BuildContext context) {
+    final showHeaderActual =
+        showHeader || (!widget.core.settings.collapseHeadersOnFocus);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<Section>.value(value: widget.section),
@@ -56,7 +62,7 @@ class _SectionLyricsState extends State<SectionLyrics> {
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
-                height: showHeader ? 40 : 0,
+                height: showHeaderActual ? 40 : 0,
                 child: Row(
                   children: [
                     Text(

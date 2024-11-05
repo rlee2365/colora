@@ -302,9 +302,11 @@ class _AudioTransportState extends State<AudioTransport> {
           Expanded(
             child: KeyboardVisibility(
               onChanged: (visible) {
+                final shouldCollapse = visible &&
+                    (widget.project.core!.settings.collapseHeadersOnFocus);
                 setState(() {
                   transportHeight =
-                      visible ? collapsedHeight : fullTransportHeight;
+                      shouldCollapse ? collapsedHeight : fullTransportHeight;
                 });
               },
               child: Column(
@@ -317,7 +319,7 @@ class _AudioTransportState extends State<AudioTransport> {
                         AnimatedContainer(
                           width: pixelsPerSecond * d * 1000,
                           height: transportHeight,
-                          duration: Duration(milliseconds: 100),
+                          duration: const Duration(milliseconds: 100),
                           decoration: BoxDecoration(
                             color: theme.colorScheme.onSecondaryFixed,
                           ),
@@ -327,7 +329,7 @@ class _AudioTransportState extends State<AudioTransport> {
                           child: AnimatedContainer(
                             width: 1,
                             height: transportHeight,
-                            duration: Duration(milliseconds: 100),
+                            duration: const Duration(milliseconds: 100),
                             color: Colors.red,
                           ),
                         ),
@@ -351,7 +353,7 @@ class _AudioTransportState extends State<AudioTransport> {
                         ),
                         AnimatedContainer(
                           height: transportHeight,
-                          duration: Duration(milliseconds: 100),
+                          duration: const Duration(milliseconds: 100),
                           child: NotificationListener<ScrollNotification>(
                             onNotification: (n) {
                               if (n is ScrollStartNotification) {

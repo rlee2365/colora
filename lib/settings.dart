@@ -10,6 +10,7 @@ import 'package:path/path.dart' as p;
 
 class ColoraSettings extends ChangeNotifier {
   static const String _keySeedColor = 'seedColor';
+  bool collapseHeadersOnFocus = false;
 
   static Future<ColoraSettings> load() async {
     final prefs = await SharedPreferences.getInstance();
