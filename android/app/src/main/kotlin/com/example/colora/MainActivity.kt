@@ -1,4 +1,4 @@
-package com.example.colora
+package com.niridev.colora
 
 import io.flutter.embedding.android.FlutterActivity
 
