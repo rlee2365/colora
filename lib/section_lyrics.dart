@@ -1,6 +1,5 @@
 import 'package:colora/core.dart';
 import 'package:colora/models.dart';
-import 'package:colora/section_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_visibility_pro/keyboard_visibility_pro.dart';
 import 'package:provider/provider.dart';
@@ -131,14 +130,17 @@ class _SectionLyricsState extends State<SectionLyrics> {
             ),
             if (showHeaderActual) const Divider(),
             Expanded(
-              child: TextField(
-                decoration: null,
-                maxLines: null,
-                controller: _lyricsController,
-                onChanged: (value) {
-                  section.lyrics = value;
-                },
-                style: widget.theme.textTheme.bodyMedium,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: TextField(
+                  decoration: null,
+                  maxLines: null,
+                  controller: _lyricsController,
+                  onChanged: (value) {
+                    section.lyrics = value;
+                  },
+                  style: widget.theme.textTheme.bodyMedium,
+                ),
               ),
             ),
           ],

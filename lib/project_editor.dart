@@ -1,4 +1,5 @@
 import 'package:colora/models.dart';
+import 'package:colora/objectbox.g.dart';
 import 'package:colora/project_export.dart';
 import 'package:colora/section_lyrics.dart';
 import 'package:colora/section_overlay.dart';
@@ -39,6 +40,7 @@ class _ProjectEditorState extends State<ProjectEditor> {
   void initState() {
     super.initState();
     titleController.text = widget.project.name;
+    scratchpadController.text = widget.project.scratchpad;
   }
 
   @override
@@ -149,41 +151,31 @@ class _ProjectEditorState extends State<ProjectEditor> {
                     child: PageView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        MultiProvider(
-                          providers: [
-                            ChangeNotifierProvider.value(value: widget.project),
-                            ChangeNotifierProvider.value(
-                                value: transportController),
-                            ChangeNotifierProvider.value(
-                                value: sectionDragNotifier),
-                          ],
-                          child: Consumer3<AudioTransportController, Project,
-                                  SectionDragNotifier>(
-                              builder: (context, controller, project, _, __) {
-                            final project = widget.project;
-                            final section =
-                                project.getSection(controller.currentTimeMs);
-                            if (section != null) {
-                              return SectionLyrics(
-                                key: ValueKey(section.id),
-                                theme: theme,
-                                section: section,
-                                core: project.core!,
-                              );
-                            } else {
-                              return const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("create a section to edit lyrics"),
-                                  ],
-                                ),
-                              );
-                            }
-                          }),
-                        ),
+                        swipeHint(theme, text: "scratchpad"),
+                        Column(children: [
+                          const Text("scratchpad",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )),
+                          const Divider(),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 8.0,
+                                right: 16.0,
+                              ),
+                              child: TextField(
+                                controller: scratchpadController,
+                                decoration: null,
+                                maxLines: null,
+                                style: theme.textTheme.bodyMedium,
+                                onChanged: (value) {
+                                  widget.project.setScratchpad(value);
+                                },
+                              ),
+                            ),
+                          )
+                        ])
                       ],
                     ),
                   ),
@@ -193,6 +185,76 @@ class _ProjectEditorState extends State<ProjectEditor> {
           ),
         ),
       ),
+    );
+  }
+
+  Stack swipeHint(ThemeData theme, {required String text, bool left = false}) {
+    return Stack(
+      children: [
+        Center(
+          child: Row(
+            mainAxisAlignment:
+                (left ? MainAxisAlignment.start : MainAxisAlignment.end),
+            children: [
+              if (left)
+                Container(
+                  color: theme.colorScheme.primaryContainer,
+                  child: RotatedBox(
+                    quarterTurns: 3,
+                    child: Text(
+                      text,
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ),
+                ),
+              Icon(left ? Icons.arrow_left : Icons.arrow_right),
+              if (!left)
+                Container(
+                  color: theme.colorScheme.primaryContainer,
+                  child: RotatedBox(
+                    quarterTurns: 3,
+                    child: Text(
+                      text,
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider.value(value: widget.project),
+            ChangeNotifierProvider.value(value: transportController),
+            ChangeNotifierProvider.value(value: sectionDragNotifier),
+          ],
+          child:
+              Consumer3<AudioTransportController, Project, SectionDragNotifier>(
+                  builder: (context, controller, project, _, __) {
+            final project = widget.project;
+            final section = project.getSection(controller.currentTimeMs);
+            if (section != null) {
+              return SectionLyrics(
+                key: ValueKey(section.id),
+                theme: theme,
+                section: section,
+                core: project.core!,
+              );
+            } else {
+              return const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("create a section to edit lyrics"),
+                  ],
+                ),
+              );
+            }
+          }),
+        ),
+      ],
     );
   }
 }

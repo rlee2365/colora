@@ -238,6 +238,11 @@ class Project extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setScratchpad(String scratchpad) {
+    this.scratchpad = scratchpad;
+    notifyListeners();
+  }
+
   String generateLyrics({bool timestamps = false}) {
     final sb = StringBuffer();
     final sections = this.sections.toList();
