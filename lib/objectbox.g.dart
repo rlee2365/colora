@@ -22,7 +22,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 7821197814989437761),
       name: 'Project',
-      lastPropertyId: const obx_int.IdUid(5, 1639930166387832011),
+      lastPropertyId: const obx_int.IdUid(6, 2986367395658922291),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -49,6 +49,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(5, 1639930166387832011),
             name: 'dateUpdated',
             type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 2986367395658922291),
+            name: 'scratchpad',
+            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -191,12 +196,14 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final nameOffset = fbb.writeString(object.name);
           final appLocalFilePathOffset =
               fbb.writeString(object.appLocalFilePath);
-          fbb.startTable(6);
+          final scratchpadOffset = fbb.writeString(object.scratchpad);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addOffset(2, appLocalFilePathOffset);
           fbb.addInt64(3, object.durMilliseconds);
           fbb.addInt64(4, object.dateUpdated?.millisecondsSinceEpoch);
+          fbb.addOffset(5, scratchpadOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -215,7 +222,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
                 const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0)
             ..dateUpdated = dateUpdatedValue == null
                 ? null
-                : DateTime.fromMillisecondsSinceEpoch(dateUpdatedValue);
+                : DateTime.fromMillisecondsSinceEpoch(dateUpdatedValue)
+            ..scratchpad = const fb.StringReader(asciiOptimization: true)
+                .vTableGet(buffer, rootOffset, 14, '');
           obx_int.InternalToManyAccess.setRelInfo<Project>(
               object.sections,
               store,
@@ -320,6 +329,10 @@ class Project_ {
   /// See [Project.dateUpdated].
   static final dateUpdated =
       obx.QueryDateProperty<Project>(_entities[0].properties[4]);
+
+  /// See [Project.scratchpad].
+  static final scratchpad =
+      obx.QueryStringProperty<Project>(_entities[0].properties[5]);
 
   /// see [Project.sections]
   static final sections =

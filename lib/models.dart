@@ -219,7 +219,7 @@ class Project extends ChangeNotifier {
     dateUpdated = DateTime.now();
     super.notifyListeners();
     if (id == 0) return;
-    core?.projectBox!.put(this);
+    core!.projectBox!.put(this);
   }
 
   void setName(String name) {

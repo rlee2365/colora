@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:7821197814989437761",
-      "lastPropertyId": "5:1639930166387832011",
+      "lastPropertyId": "6:2986367395658922291",
       "name": "Project",
       "properties": [
         {
@@ -33,6 +33,11 @@
           "id": "5:1639930166387832011",
           "name": "dateUpdated",
           "type": 10
+        },
+        {
+          "id": "6:2986367395658922291",
+          "name": "scratchpad",
+          "type": 9
         }
       ],
       "relations": []
