@@ -25,10 +25,12 @@ class AudioTransport extends StatefulWidget {
   static const double disallowSectionMargin = 8.0;
   final Project project;
   final AudioTransportController controller;
+  final SectionDragNotifier sectionDragNotifier;
   const AudioTransport({
     super.key,
     required this.project,
     required this.controller,
+    required this.sectionDragNotifier,
   });
 
   @override
@@ -45,7 +47,6 @@ class _AudioTransportState extends State<AudioTransport> {
   ScrollController sectionScrollController = ScrollController();
   StreamController<List<double>> waveformDataController = StreamController();
   StreamSubscription? finishedExtractionSubscription;
-  SectionDragNotifier sectionDragNotifier = SectionDragNotifier();
   int noOfSamples = 120;
   double pixelsPerSecond = 4.0;
   double squeezeExponent = 2.0;
@@ -342,7 +343,7 @@ class _AudioTransportState extends State<AudioTransport> {
                                   pixelsPerSecond: pixelsPerSecond,
                                   project: widget.project,
                                   transportHeight: transportHeight,
-                                  dragNotifier: sectionDragNotifier,
+                                  dragNotifier: widget.sectionDragNotifier,
                                 ),
                               ),
                             ],
@@ -424,7 +425,7 @@ class _AudioTransportState extends State<AudioTransport> {
                       MultiProvider(
                           providers: [
                             ChangeNotifierProvider.value(
-                                value: sectionDragNotifier),
+                                value: widget.sectionDragNotifier),
                             ChangeNotifierProvider.value(
                                 value: scrollController),
                           ],
@@ -447,7 +448,7 @@ class _AudioTransportState extends State<AudioTransport> {
                               : Icons.play_arrow)),
                       const SizedBox(width: 4.0),
                       ChangeNotifierProvider.value(
-                        value: sectionDragNotifier,
+                        value: widget.sectionDragNotifier,
                         child: ChangeNotifierProvider.value(
                             value: scrollController,
                             child: Consumer3<ScrollController, Project,
@@ -458,7 +459,7 @@ class _AudioTransportState extends State<AudioTransport> {
                       ),
                       const SizedBox(width: 4.0),
                       ChangeNotifierProvider.value(
-                        value: sectionDragNotifier,
+                        value: widget.sectionDragNotifier,
                         child: ChangeNotifierProvider.value(
                             value: scrollController,
                             child: StreamBuilder(
@@ -478,7 +479,7 @@ class _AudioTransportState extends State<AudioTransport> {
                       MultiProvider(
                           providers: [
                             ChangeNotifierProvider.value(
-                                value: sectionDragNotifier),
+                                value: widget.sectionDragNotifier),
                             ChangeNotifierProvider.value(
                                 value: scrollController),
                           ],

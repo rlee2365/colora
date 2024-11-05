@@ -1,4 +1,5 @@
 import 'package:colora/models.dart';
+import 'package:colora/section_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_visibility_pro/keyboard_visibility_pro.dart';
 import 'package:provider/provider.dart';
@@ -39,8 +40,10 @@ class _SectionLyricsState extends State<SectionLyrics> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: widget.section,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Section>.value(value: widget.section),
+      ],
       child: Consumer<Section>(builder: (context, section, _) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

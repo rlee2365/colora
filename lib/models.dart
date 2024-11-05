@@ -94,6 +94,7 @@ class Project extends ChangeNotifier {
   int id = 0;
   String name = "";
   String appLocalFilePath = "";
+  String scratchpad = "";
   int durMilliseconds = 0;
   @Property(type: PropertyType.date)
   DateTime? dateUpdated;
